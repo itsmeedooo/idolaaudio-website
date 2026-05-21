@@ -1,0 +1,60 @@
+.
+├── astro.config.mjs
+├── dist
+│   ├── client
+│   │   ├── _astro
+│   │   │   ├── client.DC-NXwka.js
+│   │   │   ├── index.CnR0mmob.js
+│   │   │   └── keystatic-page.YZfkYO8a.js
+│   │   ├── favicon.ico
+│   │   ├── favicon.svg
+│   │   └── index.html
+│   └── server
+│       ├── chunks
+│       │   ├── astro-component_utJh_Cas.mjs
+│       │   ├── image-service-workerd_D5oVpbMx.mjs
+│       │   ├── image-transform-endpoint_DfxkwrWo.mjs
+│       │   ├── keystatic-api_Bv5sNEej.mjs
+│       │   ├── keystatic-astro-page_CRYge48n.mjs
+│       │   ├── noop-entrypoint_DsBX4kaI.mjs
+│       │   ├── _virtual_astro_server-island-manifest_CFl7y3Qj.mjs
+│       │   ├── _virtual_astro_session-driver_Csu6PJY6.mjs
+│       │   └── worker-entry_B0JkKB7c.mjs
+│       ├── entry.mjs
+│       ├── virtual_astro_middleware.mjs
+│       └── wrangler.json
+├── keystatic.config.ts
+├── package.json
+├── package-lock.json
+├── public
+│   ├── favicon.ico
+│   └── favicon.svg
+├── README.md
+├── src
+│   ├── assets
+│   │   ├── astro.svg
+│   │   └── background.svg
+│   ├── components
+│   │   └── Welcome.astro
+│   ├── content
+│   │   ├── config.ts
+│   │   ├── faq
+│   │   │   ├── area-jawa.json
+│   │   │   ├── audio-masjid.json
+│   │   │   ├── cctv-hp.json
+│   │   │   ├── garansi.json
+│   │   │   └── survey.json
+│   │   └── portfolio
+│   │       ├── luxury-audio.json
+│   │       ├── premium-cctv.json
+│   │       └── smart-office.json
+│   ├── content.config.ts
+│   ├── layouts
+│   │   └── Layout.astro
+│   └── pages
+│       └── index.astro
+├── test.txt
+├── tsconfig.json
+└── verbose.txt
+
+15 directories, 43 files

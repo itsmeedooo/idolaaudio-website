@@ -1,0 +1,631 @@
+---
+import { getCollection } from 'astro:content';
+
+// Safely fetch collections. If they don't exist yet, return empty arrays.
+let faqs = [];
+let portfolios = [];
+try {
+  faqs = await getCollection('faq');
+} catch (e) {
+  // Collection might not exist yet
+}
+try {
+  portfolios = await getCollection('portfolio');
+} catch (e) {
+  // Collection might not exist yet
+}
+
+// Default values if no data yet (for smooth transition)
+const displayFaqs = faqs.map(f => ({ slug: f.id, entry: f.data }));
+
+const displayPortfolios = portfolios.map(p => ({ slug: p.id, entry: p.data }));
+---
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Idola Audio & CCTV - Jasa pemasangan CCTV, sound system, audio profesional, dan smart integration untuk rumah, kantor, cafe, hotel, dan masjid di Salatiga, Semarang, Solo, Jogja, dan seluruh Pulau Jawa.">
+  <meta name="keywords" content="CCTV Salatiga, pemasangan CCTV Semarang, audio masjid Jawa Tengah, sound system cafe, CCTV Jawa Tengah, CCTV Jawa Timur, CCTV Jogja, home theater Salatiga, jasa instalasi CCTV, audio profesional Indonesia">
+  <meta name="author" content="Idola Audio & CCTV">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Idola Audio & CCTV | Premium Security & Sound">
+  <meta property="og:description" content="Solusi premium CCTV dan audio profesional untuk rumah, bisnis, hotel, cafe, dan masjid di seluruh Pulau Jawa.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="id_ID">
+  <title>Idola Audio & CCTV | Premium Security & Sound</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style is:inline>
+    :root{
+      --gold:#D4AF37;
+      --black:#0d0d0d;
+      --dark:#151515;
+      --white:#ffffff;
+      --gray:#f5f5f5;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+    body{font-family:Poppins,sans-serif;background:var(--gray);color:var(--black);overflow-x:hidden;transition:.4s}.loader{
+  position:fixed;inset:0;background:#000;display:flex;justify-content:center;align-items:center;z-index:9999;
+  color:var(--gold);font-family:Montserrat;font-size:2rem;animation:fadeOut .8s ease 2s forwards;
+}
+@keyframes fadeOut{to{opacity:0;visibility:hidden}}
+
+nav{
+  position:fixed;top:0;width:100%;padding:20px 8%;display:flex;justify-content:space-between;align-items:center;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(12px);z-index:1000;transition:.3s
+}
+nav.scrolled{padding:14px 8%;background:rgba(0,0,0,.95)}
+.logo{font-family:Montserrat;font-weight:800;color:var(--gold);font-size:1.5rem;letter-spacing:2px}
+nav ul{display:flex;list-style:none;gap:30px;align-items:center}
+
+.hamburger{
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  cursor:pointer;
+}
+
+.hamburger span{
+  width:28px;
+  height:3px;
+  background:white;
+  border-radius:10px;
+  transition:.3s;
+}
+
+
+nav a{text-decoration:none;color:white;font-size:.9rem;transition:.3s}
+nav a:hover{color:var(--gold)}
+
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;color:white;padding:20px;
+  background:linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.8)),url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2000&q=80') center/cover fixed;
+}
+.hero h1{font-family:Montserrat;font-size:4.5rem;line-height:1.05;margin-bottom:20px}
+.hero p{max-width:700px;margin:auto;color:#ddd;font-size:1.1rem}
+.btn{display:inline-block;margin-top:30px;padding:16px 38px;background:var(--gold);color:black;text-decoration:none;font-weight:600;border-radius:50px;transition:.3s}
+.btn:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(212,175,55,.35)}
+
+section{padding:100px 8%}
+
+.stats-section{
+  background:#0d0d0d;
+  padding:70px 8%;
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:25px;
+  text-align:center;
+}
+
+.stat-box{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(212,175,55,.15);
+  border-radius:25px;
+  padding:40px 20px;
+  backdrop-filter:blur(10px);
+  transition:.35s;
+}
+
+.stat-box:hover{
+  transform:translateY(-8px);
+  border-color:rgba(212,175,55,.45);
+  box-shadow:0 15px 35px rgba(0,0,0,.35);
+}
+
+.stat-box h2{
+  font-size:3rem;
+  font-family:Montserrat;
+  color:var(--gold);
+  margin-bottom:10px;
+}
+
+.stat-box p{
+  color:#ccc;
+  letter-spacing:1px;
+}
+.title{text-align:center;font-family:Montserrat;font-size:2.5rem;margin-bottom:50px}
+.title span{color:var(--gold)}
+
+.brands{text-align:center;background:white;padding:90px 8%}
+.brand-grid{display:flex;justify-content:center;align-items:center;gap:50px;flex-wrap:wrap;margin-top:40px}
+.brand-grid img{height:70px;max-width:160px;object-fit:contain;filter:grayscale(100%);opacity:.75;transition:.35s}
+.brand-grid img:hover{filter:none;opacity:1;transform:scale(1.08)}
+
+body.dark .brands{background:#111}
+body.dark .brand-grid img{filter:brightness(0) invert(1);opacity:.8}
+
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px}
+.card{
+  background:white;padding:35px;border-radius:20px;box-shadow:0 10px 25px rgba(0,0,0,.08);transition:.35s
+}
+.card:hover{transform:translateY(-10px);background:var(--dark);color:white}
+.card h3{font-family:Montserrat;margin-bottom:12px;color:var(--gold)}
+
+.gallery{background:var(--black)}
+
+.live-demo{
+  background:#101010;
+  color:white;
+}
+
+.demo-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:40px;
+  align-items:center;
+}
+
+.demo-video iframe{
+  width:100%;
+  height:400px;
+  border:none;
+  border-radius:25px;
+  box-shadow:0 15px 40px rgba(0,0,0,.4);
+}
+
+.demo-info h3{
+  font-family:Montserrat;
+  font-size:2rem;
+  margin-bottom:20px;
+  color:var(--gold);
+}
+
+.demo-info p{
+  color:#ccc;
+  line-height:1.9;
+  margin-bottom:25px;
+}
+
+.demo-features{
+  display:flex;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.demo-features span{
+  background:rgba(212,175,55,.12);
+  border:1px solid rgba(212,175,55,.3);
+  padding:12px 18px;
+  border-radius:50px;
+  color:var(--gold);
+  font-size:.95rem;
+}
+.gallery .title{color:white}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.item{height:320px;border-radius:20px;overflow:hidden;position:relative}
+.item img{width:100%;height:100%;object-fit:cover;transition:.6s}
+.item:hover img{transform:scale(1.12)}
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;justify-content:center;align-items:center;color:white;opacity:0;transition:.3s;font-family:Montserrat}
+.item:hover .overlay{opacity:1}
+
+.faq-section{
+  background:#0f0f0f;
+  color:white;
+}
+
+.faq-container{
+  max-width:900px;
+  margin:auto;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.faq-item{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(212,175,55,.12);
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.faq-question{
+  width:100%;
+  background:none;
+  border:none;
+  color:white;
+  padding:24px;
+  text-align:left;
+  font-size:1rem;
+  font-family:Poppins;
+  cursor:pointer;
+  position:relative;
+}
+
+.faq-question::after{
+  content:'+';
+  position:absolute;
+  right:25px;
+  color:var(--gold);
+  font-size:1.4rem;
+}
+
+.faq-answer{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .4s ease;
+  background:#151515;
+}
+
+.faq-answer p{
+  padding:0 24px 24px;
+  color:#bbb;
+  line-height:1.8;
+}
+
+.faq-item.active .faq-answer{
+  max-height:200px;
+}
+
+.faq-item.active .faq-question::after{
+  content:'−';
+}
+
+.contact{background:white;text-align:center}
+iframe{width:100%;height:350px;border:none;border-radius:20px;margin-top:30px}
+
+footer{
+  background:#050505;
+  color:#aaa;
+  padding:80px 8% 30px;
+  border-top:1px solid rgba(212,175,55,.15);
+}
+
+.footer-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:40px;
+  margin-bottom:50px;
+}
+
+.footer-box h3,
+.footer-box h4{
+  color:var(--gold);
+  font-family:Montserrat;
+  margin-bottom:18px;
+}
+
+.footer-box p{
+  line-height:1.9;
+  color:#999;
+  font-size:.95rem;
+}
+
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:25px;
+  text-align:center;
+  color:#666;
+  font-size:.9rem;
+  letter-spacing:.5px;
+}
+
+.testimonials{background:var(--gray);text-align:center}
+.testimonial-slider{
+  max-width:800px;margin:auto;background:white;padding:50px 40px;border-radius:25px;
+  box-shadow:0 10px 35px rgba(0,0,0,.08);position:relative;overflow:hidden
+}
+.slides{display:none;animation:fade 1s}
+.slides.active{display:block}
+.stars{color:var(--gold);font-size:1.3rem;margin-bottom:15px}
+.slides p{font-size:1.1rem;color:#555;margin-bottom:20px;line-height:1.8}
+.slides h4{font-family:Montserrat;font-size:1.1rem;color:#111}
+.slides small{color:#888}
+
+@keyframes fade{
+  from{opacity:.3;transform:translateY(20px)}
+  to{opacity:1;transform:none}
+}
+
+.wa{
+  position:fixed;bottom:25px;right:25px;width:65px;height:65px;background:#25D366;border-radius:50%;display:flex;
+  justify-content:center;align-items:center;color:white;font-size:30px;text-decoration:none;animation:pulse 2s infinite;z-index:999
+}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.7)}70%{box-shadow:0 0 0 20px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+
+.reveal{opacity:0;transform:translateY(40px);transition:1s}
+.reveal.active{opacity:1;transform:none}
+
+@media(max-width:768px){
+  .hero h1{font-size:2.6rem}
+
+  nav ul{
+    position:absolute;
+    top:80px;
+    right:-100%;
+    flex-direction:column;
+    background:rgba(0,0,0,.95);
+    width:260px;
+    padding:30px;
+    border-radius:20px;
+    transition:.4s;
+  }
+
+  nav ul.active{
+    right:20px;
+  }
+
+  .hamburger{
+    display:flex;
+  }
+}
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Idola Audio & CCTV",
+    "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+    "description": "Jasa pemasangan CCTV dan audio profesional di Salatiga dan seluruh Pulau Jawa.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Salatiga",
+      "addressRegion": "Jawa Tengah",
+      "addressCountry": "ID"
+    },
+    "areaServed": [
+      "Jawa Tengah",
+      "Jawa Timur",
+      "Jawa Barat",
+      "Yogyakarta",
+      "Jakarta"
+    ],
+    "telephone": "+628112621599",
+    "email": "idolasolusibersama@gmail.com",
+    "openingHours": "Mo-Sa 07:00-17:00"
+  }
+  </script>
+</head>
+<body>
+  <div class="loader">IDOLA</div>  <nav id="nav">
+    <div class="logo">IDOLA</div>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#contact">Contact</a></li></ul>
+
+<div class="hamburger" id="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+  </nav>  <section class="hero" id="home">
+    <div>
+      <p style="color:var(--gold);letter-spacing:4px;margin-bottom:10px">PREMIUM SECURITY & SOUND</p>
+      <h1>Modern Security.<br>Luxury Audio.</h1>
+      <p>Solusi CCTV premium, tata suara profesional, dan smart integration untuk rumah, bisnis, hotel, hingga tempat ibadah.</p>
+      <a href="https://wa.me/628112621599" class="btn">Konsultasi Gratis</a>
+    </div>
+  </section>  <section class="stats-section">
+    <div class="stats-grid reveal">
+      <div class="stat-box">
+        <h2 class="counter" data-target="635">0</h2>
+        <p>+ Instalasi</p>
+      </div><div class="stat-box">
+    <h2 class="counter" data-target="15">0</h2>
+    <p>Tahun Pengalaman</p>
+  </div>
+
+  <div class="stat-box">
+    <h2 class="counter" data-target="300">0</h2>
+    <p>Client</p>
+  </div>
+
+  <div class="stat-box">
+    <h2>24/7</h2>
+    <p>Support</p>
+  </div>
+</div>
+
+  </section>  <section class="brands reveal">
+    <h2 class="title">AUTHORIZED <span>BRANDS</span></h2>
+    <div class="brand-grid">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/bc/JBL_logo.svg" alt="JBL">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/AKG_logo.svg" alt="AKG">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Bose_logo.svg" alt="Bose">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Sony_logo.svg" alt="Sony">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Sennheiser_logo_%282019%29.svg" alt="Sennheiser">
+      <img src="https://cdn.brandfetch.io/id34IDUiir/theme/dark/logo.svg?c=1dxbfHSJFAPEGdCLU4o5B" alt="TurboSound">
+      <img src="https://cdn.brandfetch.io/idwzO5kj2r/theme/dark/logo.svg?c=1dxbfHSJFAPEGdCLU4o5B" alt="Mackie">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Behringer_new_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" alt="Behringer">
+      <img src="https://cdn.brandfetch.io/idyx5hVgAl/w/460/h/160/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B" alt="Allen&heath">
+      <img src="https://images.seeklogo.com/logo-png/21/1/bc-speakers-logo-png_seeklogo-212410.png" alt="B&C">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/Hikvision_logo.svg" alt="Hikvision">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Honeywell_logo.svg" alt="Honeywell">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c0/TP-LINK_logo.svg" alt="TP-link">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f5/Dahua_Technology_logo.svg" alt="Dahua">
+    </div>
+  </section>  <section id="why">
+    <h2 class="title reveal">WHY <span>CHOOSE US</span></h2>
+    <div class="why">
+      <div class="card reveal"><h3>Premium Quality</h3><p>Produk original dari brand ternama dunia dengan garansi resmi.</p></div>
+      <div class="card reveal"><h3>Professional Team</h3><p>Teknisi berpengalaman dengan hasil pemasangan rapi dan presisi.</p></div>
+      <div class="card reveal"><h3>Smart Control</h3><p>Semua sistem bisa dipantau dan dikontrol langsung dari smartphone.</p></div>
+    </div>
+  </section>  <section class="gallery" id="portfolio">
+    <h2 class="title reveal">OUR <span>PORTFOLIO</span></h2>
+    <div class="grid">
+      {displayPortfolios.map((portfolio) => (
+        <div class="item reveal">
+          <img src={portfolio.entry.image || ''} alt={portfolio.entry.title} />
+          <div class="overlay">{portfolio.entry.category}</div>
+        </div>
+      ))}
+    </div>
+  </section>  <section class="live-demo" id="live-demo">
+    <h2 class="title reveal">LIVE <span>CCTV DEMO</span></h2><div class="demo-container reveal">
+  <div class="demo-video">
+    <iframe 
+      src="https://www.youtube.com/embed/1EiC9bvVGnk?autoplay=1&mute=1&loop=1&playlist=1EiC9bvVGnk" 
+      title="Live CCTV Demo" 
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="demo-info">
+    <h3>Realtime Monitoring System</h3>
+    <p>
+      Pantau keamanan rumah, toko, kantor, hingga gudang secara realtime langsung dari smartphone Anda.
+      Mendukung night vision, motion detection, cloud backup, dan remote access 24 jam.
+    </p>
+
+    <div class="demo-features">
+      <span>✔ Full HD & 4K</span>
+      <span>✔ Night Vision</span>
+      <span>✔ Mobile Monitoring</span>
+      <span>✔ Motion Detection</span>
+    </div>
+  </div>
+</div>
+
+  </section>  <section class="testimonials" id="testimonials">
+    <h2 class="title reveal">CLIENT <span>TESTIMONIALS</span></h2><div class="testimonial-slider reveal">
+  <div class="slides active">
+    <div class="stars">★★★★★</div>
+    <p>"Pemasangan CCTV sangat rapi dan kualitas gambarnya luar biasa jernih. Pelayanan profesional dan cepat."</p>
+    <h4>Showroom Brama</h4>
+    <small>Pemilik Usaha</small>
+  </div>
+
+  <div class="slides">
+    <div class="stars">★★★★★</div>
+    <p>"Audio masjid sekarang jauh lebih jelas dan nyaman didengar. Sangat puas dengan hasilnya."</p>
+    <h4>Masjid Bukit Cinta</h4>
+    <small>Takmir Masjid</small>
+  </div>
+
+  <div class="slides">
+    <div class="stars">★★★★★</div>
+    <p>"Integrasi CCTV ke smartphone berjalan lancar. Monitoring jadi lebih mudah dari mana saja."</p>
+    <h4>Hotel Loren</h4>
+    <small>Management</small>
+  </div>
+</div>
+
+  </section>  <section class="faq-section" id="faq">
+    <h2 class="title reveal">FREQUENTLY <span>ASKED QUESTIONS</span></h2>
+    <div class="faq-container reveal">
+      {displayFaqs.map((faq) => (
+        <div class="faq-item">
+          <button class="faq-question">{faq.entry.question}</button>
+          <div class="faq-answer">
+            <p>{faq.entry.answer}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>  <section class="contact" id="contact">
+    <h2 class="title reveal">CONTACT <span>US</span></h2>
+    <p>Jl. Osamaliki No25a,Mangunsari,Kec. Sidomukti,Kota Salatiga,Jawa Tengah • WhatsApp: 0811-2621-599 & 0811-2666-026 </p>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.2086011392366!2d110.49619299999999!3d-7.3304535!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a797bc91a7a73%3A0x51b9c6a23d31e1a1!2sIdola%20Audio%20Salatiga!5e0!3m2!1sen!2sid!4v1779329537031!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </section>  <footer>
+    <div class="footer-container">
+      <div class="footer-box">
+        <h3>IDOLA AUDIO & CCTV</h3>
+        <p>
+          Solusi premium CCTV, audio profesional, dan smart integration untuk rumah,
+          bisnis, hotel, hingga tempat ibadah.
+        </p>
+      </div><div class="footer-box">
+    <h4>Jam Operasional</h4>
+    <p>Senin - Sabtu</p>
+    <p>07:00 Pagi - 05:00 Sore</p>
+  </div>
+
+  <div class="footer-box">
+    <h4>Kontak</h4>
+    <p>WhatsApp: 0811-2621-599</p>
+    <p>Email: idolasolusibersama@gmail.com</p>
+    <p>Salatiga, Indonesia</p>
+  </div>
+</div>
+
+<div class="footer-bottom">
+  © 2026 IDOLA AUDIO & CCTV — Premium Security & Sound Solutions. All Rights Reserved.
+</div>
+
+  </footer><a class="wa" href="https://wa.me/628112621599">✆</a>
+
+  <script is:inline>
+    window.addEventListener('scroll',()=>{
+      document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)
+    })
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('active')
+        }
+      })
+    })
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      observer.observe(el)
+    })
+
+    const slides = document.querySelectorAll('.slides')
+    let index = 0
+
+    function showSlides(){
+      slides.forEach(slide => {
+        slide.classList.remove('active')
+      })
+
+      index++
+
+      if(index > slides.length){
+        index = 1
+      }
+
+      slides[index - 1].classList.add('active')
+
+      setTimeout(showSlides,4000)
+    }
+
+    showSlides()
+
+    
+
+    const hamburger = document.getElementById('hamburger')
+    const navMenu = document.querySelector('nav ul')
+
+    hamburger.addEventListener('click',()=>{
+      navMenu.classList.toggle('active')
+    })
+
+    const faqItems = document.querySelectorAll('.faq-item')
+
+    faqItems.forEach(item=>{
+      const question=item.querySelector('.faq-question')
+
+      question.addEventListener('click',()=>{
+        item.classList.toggle('active')
+      })
+    })
+
+    const counters = document.querySelectorAll('.counter')
+
+    counters.forEach(counter => {
+      const target = Number(counter.getAttribute('data-target'))
+      let count = 0
+
+      const updateCounter = () => {
+        const increment = Math.ceil(target / 50)
+
+        count += increment
+
+        if(count >= target){
+          counter.innerText = target
+        } else {
+          counter.innerText = count
+          requestAnimationFrame(updateCounter)
+        }
+      }
+
+      updateCounter()
+    })
+  </script></body>
+</html>
