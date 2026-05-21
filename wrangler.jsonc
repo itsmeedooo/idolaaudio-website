@@ -1,7 +1,16 @@
 {
+    "$schema": "./node_modules/wrangler/config-schema.json",
     "name": "idolaaudio-website",
     "compatibility_date": "2026-05-21",
+    "compatibility_flags": [
+        "nodejs_compat"
+    ],
+    "main": "./dist/_worker.js/index.js",
     "assets": {
-        "directory": "./dist"
+        "directory": "./dist",
+        "binding": "ASSETS"
+    },
+    "observability": {
+        "enabled": true
     }
 }
