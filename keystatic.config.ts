@@ -55,5 +55,26 @@ export default config({
         }),
       },
     }),
+    testimonials: collection({
+      label: 'Testimonials',
+      slugField: 'name',
+      path: 'src/content/testimonials/*',
+      format: { data: 'json' },
+      schema: {
+        name: fields.slug({
+          name: {
+            label: 'Nama Klien',
+            description: 'Contoh: Showroom Brama'
+          },
+          slug: {
+            label: 'Slug',
+            description: 'Contoh: showroom-brama'
+          }
+        }),
+        role: fields.text({ label: 'Peran / Posisi', description: 'Contoh: Pemilik Usaha' }),
+        review: fields.text({ label: 'Testimoni', multiline: true }),
+        rating: fields.integer({ label: 'Rating (1-5)', defaultValue: 5, validation: { min: 1, max: 5 } }),
+      },
+    }),
   },
 });

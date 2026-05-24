@@ -18,7 +18,18 @@ const portfolio = defineCollection({
   }),
 });
 
+const testimonial = defineCollection({
+  loader: glob({ pattern: "**/*.json", base: "./src/content/testimonials" }),
+  schema: z.object({
+    name: z.string(),
+    role: z.string(),
+    rating: z.number(),
+    review: z.string(),
+  }),
+});
+
 export const collections = {
   faq,
   portfolio,
+  testimonial,
 };
